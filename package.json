@@ -1,0 +1,33 @@
+{
+  "name": "librarybot",
+  "version": "0.0.0",
+  "private": true,
+  "packageManager": "pnpm@10.33.0",
+  "type": "commonjs",
+  "main": "dist/index.cjs",
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "build": "esbuild src/main.ts --bundle --platform=node --format=cjs --target=node24 --outfile=dist/index.cjs",
+    "test": "INPUT_MODE=list node dist/index.cjs",
+    "postversion": "npm run release",
+    "release": "auto-changelog-plus"
+  },
+  "dependencies": {
+    "@actions/core": "^3.0.0",
+    "semver": "^7.7.4",
+    "tar": "^7.5.13",
+    "yaml": "^2.8.3"
+  },
+  "devDependencies": {
+    "@types/node": "^25.5.2",
+    "@types/semver": "^7.7.1",
+    "auto-changelog-plus": "^1.2.3",
+    "esbuild": "^0.25.10",
+    "typescript": "^6.0.2"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
+  }
+}

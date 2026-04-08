@@ -1,0 +1,55 @@
+name: Update libraries from npm
+description: Sync third-party libraries from npm into a local directory and bump versions in config files.
+author: Lruihao
+
+branding:
+  icon: download
+  color: blue
+
+inputs:
+  mode:
+    description: "'list' outputs library list; 'update' updates a single library."
+    required: false
+    default: update
+  library:
+    description: npm package name to update (required when mode=update).
+    required: false
+  config_path:
+    description: Path to librarybot.yml (preferred)
+    required: false
+    default: ./librarybot.yml
+  libraries_path:
+    description: Legacy alias of config_path (will be ignored if config_path is set)
+    required: false
+  cdn_files:
+    description: Comma separated paths to CDN config yaml files to update.
+    required: false
+    default: ./assets/data/cdn/jsdelivr.yml,./assets/data/cdn/unpkg.yml
+  update_cdn:
+    description: Whether to update CDN config files.
+    required: false
+    default: "true"
+  update_local:
+    description: Whether to sync local files/directories for this library.
+    required: false
+    default: "true"
+  npm_registry:
+    description: npm registry base url.
+    required: false
+    default: https://registry.npmjs.org
+outputs:
+  libraries_json:
+    description: JSON array of npm package names (mode=list).
+  changed:
+    description: Whether the working tree changed (mode=update).
+  from_version:
+    description: Previous version (mode=update).
+  to_version:
+    description: Updated version (mode=update).
+  package:
+    description: npm package name (mode=update).
+  pr_branch:
+    description: Suggested branch name for PR (mode=update).
+runs:
+  using: node24
+  main: dist/index.cjs
