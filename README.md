@@ -142,9 +142,9 @@ In repository Settings → Actions → General, set “Workflow permissions” t
 ## Local development
 
 ```bash
-npm install
-npm run typecheck
-npm run build
+pnpm install
+pnpm typecheck
+pnpm build
 ```
 
 This action is bundled with `esbuild` into `dist/index.cjs`. Before releasing, commit the updated `dist/` output.

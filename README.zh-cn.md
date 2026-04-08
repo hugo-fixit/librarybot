@@ -142,9 +142,9 @@ jobs:
 ## 本地开发
 
 ```bash
-npm install
-npm run typecheck
-npm run build
+pnpm install
+pnpm typecheck
+pnpm build
 ```
 
 Action 使用 `esbuild` 将源码打包到 `dist/index.cjs`；发布前需要提交最新的 `dist/` 产物。
