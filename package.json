@@ -22,7 +22,7 @@
     "@types/node": "^25.5.2",
     "@types/semver": "^7.7.1",
     "auto-changelog-plus": "^1.2.3",
-    "esbuild": "^0.25.10",
+    "esbuild": "^0.28.0",
     "typescript": "^6.0.2"
   },
   "pnpm": {
