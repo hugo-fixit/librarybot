@@ -168,7 +168,7 @@ libraries:
     local:
       items:
         - from: dist/index.umd.js
-          to: typeit/typeit.umd.js
+          to: typeit/index.umd.js
   - npm: valine
     version: 1.5.2
     local:

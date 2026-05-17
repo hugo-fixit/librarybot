@@ -31290,7 +31290,9 @@ function stripYamlQuotes(raw) {
 async function bumpLibraryVersionInFile(librariesPath, pkg, toVersion) {
   const raw = await import_promises2.default.readFile(librariesPath, "utf8");
   const hasTrailingNewline = raw.endsWith("\n");
+  const eol = raw.includes("\r\n") ? "\r\n" : "\n";
   const lines = raw.split(/\r?\n/);
+  if (hasTrailingNewline && lines[lines.length - 1] === "") lines.pop();
   let inTarget = false;
   let updated = false;
   for (let i = 0; i < lines.length; i++) {
@@ -31310,7 +31312,7 @@ async function bumpLibraryVersionInFile(librariesPath, pkg, toVersion) {
     }
   }
   if (!updated) throw new Error(`Failed to bump version in libraries.yml for ${pkg}`);
-  const next = lines.join("\n") + (hasTrailingNewline ? "\n" : "");
+  const next = lines.join(eol) + (hasTrailingNewline ? eol : "");
   if (next !== raw) await import_promises2.default.writeFile(librariesPath, next, "utf8");
 }
 function encodePackageForRegistry(pkg) {
