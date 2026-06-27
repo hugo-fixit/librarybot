@@ -51,7 +51,8 @@ libraries:
   - 默认是文件复制：只写 `from/to` 即可
   - 目录复制需显式写 `type: dir`，可选 `clean: true` 表示复制前清空目标目录
   - `from` 永远相对于 npm 包解压后的 `package/` 目录
-  - `to` 永远相对于 `baseDir`
+  - `to` 按以下优先级解析 `baseDir`：item 级 `baseDir` > 库级 `local.baseDir` > 全局 `baseDir`
+  - 可选 `baseDir`（item 级或库级）覆盖全局 `baseDir`，适用于需要将依赖同步到多个目录的场景（如 `assets/lib` 存放 JS/CSS，`static/lib` 存放字体等静态资源）
 
 ## 使用方式
 
