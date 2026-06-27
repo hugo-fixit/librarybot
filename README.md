@@ -51,7 +51,8 @@ Rules:
   - Defaults to file copy: omit `type` and only set `from/to`
   - For directories use `type: dir`; optional `clean: true` clears the destination before copying
   - `from` is always relative to the extracted `package/` directory
-  - `to` is always relative to `baseDir`
+  - `to` is resolved relative to `baseDir` with the following precedence: item-level `baseDir` > library-level `local.baseDir` > global `baseDir`
+  - Optional `baseDir` on item or library level overrides the global `baseDir` (useful when a library needs to be synced to multiple directories, e.g. `assets/lib` for JS/CSS and `static/lib` for fonts)
 
 ## Usage
 

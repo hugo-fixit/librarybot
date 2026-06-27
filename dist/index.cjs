@@ -31254,8 +31254,8 @@ async function readLibrariesConfig(librariesPath) {
       if (!Array.isArray(maybe.local.items)) {
         throw new Error(`Invalid config: local config invalid for ${maybe.npm}`);
       }
-      if ("baseDir" in maybe.local) {
-        throw new Error(`Invalid config: local.baseDir is not supported (library: ${maybe.npm})`);
+      if (typeof maybe.local.baseDir !== "undefined" && (typeof maybe.local.baseDir !== "string" || maybe.local.baseDir.length === 0)) {
+        throw new Error(`Invalid config: local.baseDir must be a non-empty string (library: ${maybe.npm})`);
       }
       for (const item of maybe.local.items) {
         if (!item || typeof item !== "object") throw new Error(`Invalid config: local item invalid for ${maybe.npm}`);
@@ -31270,6 +31270,9 @@ async function readLibrariesConfig(librariesPath) {
         }
         if (i.type !== "dir" && typeof i.clean !== "undefined") {
           throw new Error(`Invalid config: local item 'clean' is only valid for dir type (${maybe.npm})`);
+        }
+        if (typeof i.baseDir !== "undefined" && (typeof i.baseDir !== "string" || i.baseDir.length === 0)) {
+          throw new Error(`Invalid config: local item 'baseDir' must be a non-empty string (${maybe.npm})`);
         }
       }
     }
@@ -31378,11 +31381,13 @@ async function updateCdnFiles(workspaceRoot, cdnFilePaths, pkg, fromVersion, toV
 }
 async function updateLibraryLocal(workspaceRoot, globalBaseDir, lib, extractedPackageRoot) {
   if (!lib.local) return;
-  const baseDir = import_node_path10.default.resolve(workspaceRoot, globalBaseDir);
+  const globalBaseDirAbs = import_node_path10.default.resolve(workspaceRoot, globalBaseDir);
+  const localBaseDirAbs = lib.local.baseDir ? import_node_path10.default.resolve(workspaceRoot, lib.local.baseDir) : globalBaseDirAbs;
   const packageRoot = import_node_path10.default.join(extractedPackageRoot, "package");
   for (const item of lib.local.items) {
+    const itemBaseDir = item.baseDir ? import_node_path10.default.resolve(workspaceRoot, item.baseDir) : localBaseDirAbs;
     const fromAbs = import_node_path10.default.resolve(packageRoot, item.from);
-    const toAbs = import_node_path10.default.resolve(baseDir, item.to);
+    const toAbs = import_node_path10.default.resolve(itemBaseDir, item.to);
     if (!await pathExists(fromAbs)) throw new Error(`Missing npm file/dir for ${lib.npm}: ${item.from}`);
     if (item.type !== "dir") {
       await copyFile2(fromAbs, toAbs);
